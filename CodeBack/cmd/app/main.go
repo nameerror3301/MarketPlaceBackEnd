@@ -1,7 +1,7 @@
 package main
 
 import (
-	"MarketPlace/CodeBack/internal/app"
+	"MarketPlaceBackEnd/CodeBack/internal/app"
 	"log"
 )
 
