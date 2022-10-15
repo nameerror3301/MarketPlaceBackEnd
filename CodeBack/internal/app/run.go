@@ -9,7 +9,8 @@ import (
 )
 
 func SetUpRoutes(app *fiber.App) {
-	app.Get("/api", routes.Home)
+	app.Get("/api/v1", routes.Home)
+	app.Get("/api/v1/all", routes.AllProduct)
 
 }
 
