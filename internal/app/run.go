@@ -1,7 +1,7 @@
 package app
 
 import (
-	"MarketPlaceBackEnd/CodeBack/internal/routes"
+	"MarketPlaceBackEnd/internal/routes"
 	"fmt"
 
 	fiber "github.com/gofiber/fiber/v2"

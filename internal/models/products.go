@@ -19,7 +19,8 @@ type ProductData struct {
 }
 
 func (p *ProductData) ReadCSV(path string) ([]byte, error) {
-	file, err := os.Open("./internal/models/csv/yandex.csv")
+	// if you run this project not use docker paste this path in func os.Open("./internal/models/csv/yandex.csv")
+	file, err := os.Open("yandex.csv")
 	if err != nil {
 		return nil, fmt.Errorf("Err open csv - %s", err)
 	}

@@ -1,10 +1,10 @@
 package routes
 
 import (
-	"MarketPlaceBackEnd/CodeBack/internal/models"
-	"log"
+	"MarketPlaceBackEnd/internal/models"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/sirupsen/logrus"
 )
 
 func Home(c *fiber.Ctx) error {
@@ -18,7 +18,7 @@ func AllProduct(c *fiber.Ctx) error {
 	var p models.ProductData
 	request, err := p.ReadCSV("./internal/models/csv/yandex.csv")
 	if err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 
 	return c.Status(fiber.StatusOK).Send(request)

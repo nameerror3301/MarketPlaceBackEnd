@@ -1,0 +1,18 @@
+version: '3'
+
+networks:
+  connector.ex:
+    driver: bridge
+
+services:
+
+  service-backend:
+    build: .
+    container_name: cn_service_backend
+    command: service-backend
+    ports:
+      - 8080:8080
+    volumes:
+      - ./internal/models/csv/yandex.csv:/yandex.csv
+    networks:
+      - connector.ex
