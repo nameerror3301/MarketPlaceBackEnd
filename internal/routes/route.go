@@ -4,22 +4,34 @@ import (
 	"MarketPlaceBackEnd/internal/models"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/sirupsen/logrus"
 )
 
-func Home(c *fiber.Ctx) error {
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"description": "Api v1.0",
-		"status":      true,
-	})
+func RespStatus(apiVersion string, statusCode int, description string) fiber.Map {
+	return fiber.Map{
+		"apiVersion":  apiVersion,
+		"statusCode":  statusCode,
+		"description": description,
+	}
 }
 
-func AllProduct(c *fiber.Ctx) error {
-	var p models.ProductData
-	request, err := p.ReadCSV("./internal/models/csv/yandex.csv")
+func Home(c *fiber.Ctx) error {
+	return c.Status(fiber.StatusOK).JSON(RespStatus("1.0", fiber.StatusOK, "Hello, it is starting page"))
+}
+
+func GetAll(c *fiber.Ctx) error {
+	resp, err := models.GetAllProducts(c.Query("total"))
 	if err != nil {
-		logrus.Fatal(err)
+		return c.Status(fiber.ErrBadRequest.Code).JSON(RespStatus("1.0", fiber.ErrBadRequest.Code, "Incorrect data"))
 	}
 
-	return c.Status(fiber.StatusOK).Send(request)
+	return c.Status(fiber.StatusOK).Send(resp)
+}
+
+func GetById(c *fiber.Ctx) error {
+	resp, err := models.GetByIdProduct(c.Params("productId"))
+	if err != nil || resp == nil {
+		return c.Status(fiber.ErrBadRequest.Code).JSON(RespStatus("1.0", fiber.ErrBadRequest.Code, "Incorrect data"))
+	}
+
+	return c.Status(fiber.StatusOK).Send(resp)
 }

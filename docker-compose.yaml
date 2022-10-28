@@ -10,6 +10,8 @@ services:
     build: .
     container_name: cn_service_backend
     command: service-backend
+    environment:
+      - PATH_TO_FILE=/yandex.csv
     ports:
       - 8080:8080
     volumes:

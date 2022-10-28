@@ -18,9 +18,9 @@ type ProductData struct {
 	Link             string `json:"link,omitempty"`
 }
 
-func (p *ProductData) ReadCSV(path string) ([]byte, error) {
+func ReadAllCSV(path string) ([]byte, error) {
 	// if you run this project not use docker paste this path in func os.Open("./internal/models/csv/yandex.csv")
-	file, err := os.Open("yandex.csv")
+	file, err := os.Open(path)
 	if err != nil {
 		return nil, fmt.Errorf("Err open csv - %s", err)
 	}
@@ -47,7 +47,6 @@ func (p *ProductData) ReadCSV(path string) ([]byte, error) {
 			Price:            line[5],
 			Link:             line[6],
 		})
-
 	}
 	out, err := json.Marshal(product)
 	if err != nil {
@@ -57,6 +56,43 @@ func (p *ProductData) ReadCSV(path string) ([]byte, error) {
 	return out, nil
 }
 
-/*
-	For future scaling space under the database
-*/
+// All products ...
+func GetAllProducts(totalQuery string) ([]byte, error) {
+	// var product []ProductData "./internal/models/csv/yandex.csv"
+	request, err := ReadAllCSV(os.Getenv("PATH_TO_FILE"))
+	if err != nil {
+		return nil, err
+	}
+
+	/*
+		Add the ability to get a limited number of items
+	*/
+
+	return request, nil
+}
+
+// Get prodect by id ...
+func GetByIdProduct(id string) ([]byte, error) {
+	var product []ProductData
+
+	request, err := ReadAllCSV(os.Getenv("PATH_TO_FILE"))
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(request, &product)
+	if err != nil {
+		return nil, fmt.Errorf("Err unmarshal product to struct - %s", err)
+	}
+
+	for _, val := range product {
+		if val.ID == id {
+			if out, err := json.Marshal(val); err != nil {
+				return nil, fmt.Errorf("Err marshal struct - %s", err)
+			} else {
+				return out, nil
+			}
+		}
+	}
+	return nil, nil
+}
