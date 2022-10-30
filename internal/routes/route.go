@@ -4,6 +4,7 @@ import (
 	"MarketPlaceBackEnd/internal/models"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/sirupsen/logrus"
 )
 
 func RespStatus(apiVersion string, statusCode int, description string) fiber.Map {
@@ -19,8 +20,9 @@ func Home(c *fiber.Ctx) error {
 }
 
 func GetAll(c *fiber.Ctx) error {
-	resp, err := models.GetAllProducts(c.Query("total"))
+	resp, err := models.GetAllProducts()
 	if err != nil {
+		logrus.Warn(err)
 		return c.Status(fiber.ErrBadRequest.Code).JSON(RespStatus("1.0", fiber.ErrBadRequest.Code, "Incorrect data"))
 	}
 
@@ -30,6 +32,7 @@ func GetAll(c *fiber.Ctx) error {
 func GetById(c *fiber.Ctx) error {
 	resp, err := models.GetByIdProduct(c.Params("productId"))
 	if err != nil || resp == nil {
+		logrus.Warn(err)
 		return c.Status(fiber.ErrBadRequest.Code).JSON(RespStatus("1.0", fiber.ErrBadRequest.Code, "Incorrect data"))
 	}
 

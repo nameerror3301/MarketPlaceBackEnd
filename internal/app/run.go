@@ -2,10 +2,10 @@ package app
 
 import (
 	"MarketPlaceBackEnd/internal/routes"
-	"fmt"
 
 	fiber "github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/sirupsen/logrus"
 )
 
 func SetUpRoutes(app *fiber.App) {
@@ -14,7 +14,7 @@ func SetUpRoutes(app *fiber.App) {
 	app.Get("/api/v1/products/:productId", routes.GetById)
 }
 
-func Run() error {
+func Run() {
 	app := fiber.New()
 	app.Use(logger.New())
 
@@ -22,7 +22,7 @@ func Run() error {
 
 	// fmt.Errorf("Err up server - %s", err)
 	if err := app.Listen(":8080"); err != nil {
-		return fmt.Errorf("Err up server - %s", err)
+		logrus.Fatalf("Err up server - %s", err)
 	}
-	return nil
+	logrus.Info("Service is up!")
 }

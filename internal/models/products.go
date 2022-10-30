@@ -57,16 +57,12 @@ func ReadAllCSV(path string) ([]byte, error) {
 }
 
 // All products ...
-func GetAllProducts(totalQuery string) ([]byte, error) {
-	// var product []ProductData "./internal/models/csv/yandex.csv"
+func GetAllProducts() ([]byte, error) {
+	// "./internal/models/csv/yandex.csv"
 	request, err := ReadAllCSV(os.Getenv("PATH_TO_FILE"))
 	if err != nil {
 		return nil, err
 	}
-
-	/*
-		Add the ability to get a limited number of items
-	*/
 
 	return request, nil
 }
@@ -74,7 +70,7 @@ func GetAllProducts(totalQuery string) ([]byte, error) {
 // Get prodect by id ...
 func GetByIdProduct(id string) ([]byte, error) {
 	var product []ProductData
-
+	// "./internal/models/csv/yandex.csv"
 	request, err := ReadAllCSV(os.Getenv("PATH_TO_FILE"))
 	if err != nil {
 		return nil, err
