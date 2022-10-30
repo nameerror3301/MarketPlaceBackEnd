@@ -1,0 +1,90 @@
+openapi: 3.0.0
+info:
+  title: BackEnd for Market Place
+  version: 1.0.0
+  
+servers:
+  - url: http://localhost:8080/api/v1
+    
+paths:
+  /products:
+    get:
+      summary: A method to get a list of products
+      tags:
+        - Products
+      operationId: GetAllProducts
+      responses:
+        '200':
+          description: Successful answer with a list of all products.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Products"
+  
+  /products/{productId}:
+    get:
+      summary: A method to get an item from the list by id
+      tags:
+        - Products
+      operationId: GetByIdProduct
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: Product ID
+          schema:
+            type: string
+          example: 1
+      responses:
+        '200':
+          description: Successful response with a certain product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+            
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - id
+        - market_name
+        - prod_manufacturer
+        - prod_name
+        - art
+        - price
+        - link
+      properties:
+        id:
+          type: string
+          example: 1
+          
+        market_name:
+          type: string
+          example: ЯндексМаркет
+            
+        prod_manufacturer:
+          type: string
+          example: Жостовская фабрика декоративной росписи
+          
+        prod_name:
+          type: string
+          example: Жостовский поднос
+        
+        art:
+          type: string
+          example: A5D13012022001
+          
+        price:
+          type: string
+          example: 7650
+        
+        link:
+          type: string
+          example: https://market.yandex.ru/offer/jfyvHgj69IT2bDuLZUOlgw
+  
+    Products:
+      type: array
+      items:
+        $ref: "#/components/schemas/Product"
