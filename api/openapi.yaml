@@ -42,6 +42,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Product"
+        'default':
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+            
             
 components:
   schemas:
@@ -88,3 +95,22 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/Product"
+    
+    BadRequest:
+      type: object
+      required:
+        - api_version
+        - status_code
+        - description
+      properties:
+        api_version:
+          type: string
+          example: 1.0.0
+          
+        status_code:
+          type: integer
+          example: 400
+            
+        description:
+          type: string
+          example: Incorrect data

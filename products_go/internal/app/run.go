@@ -1,7 +1,7 @@
 package app
 
 import (
-	"MarketPlaceBackEnd/internal/routes"
+	"products_go/internal/routes"
 
 	fiber "github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -17,12 +17,11 @@ func SetUpRoutes(app *fiber.App) {
 func Run() {
 	app := fiber.New()
 	app.Use(logger.New())
-
 	SetUpRoutes(app)
 
-	// fmt.Errorf("Err up server - %s", err)
 	if err := app.Listen(":8080"); err != nil {
 		logrus.Fatalf("Err up server - %s", err)
 	}
+
 	logrus.Info("Service is up!")
 }

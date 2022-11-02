@@ -1,20 +1,20 @@
 version: '3'
 
 networks:
-  connector.ex:
+  in.net.ex:
     driver: bridge
 
 services:
-
-  service-backend:
-    build: .
-    container_name: cn_service_backend
-    command: service-backend
+  products:
+    build: ./products_go/
+    container_name: products.in.net.ex  
     environment:
       - PATH_TO_FILE=/yandex.csv
+      - DRIVER_CONFIG=yaml
     ports:
       - 8080:8080
     volumes:
-      - ./internal/models/csv/yandex.csv:/yandex.csv
+      - ./products_go/internal/models/csv/yandex.csv:/yandex.csv
     networks:
-      - connector.ex
+      - in.net.ex
+

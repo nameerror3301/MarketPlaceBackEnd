@@ -1,4 +1,4 @@
-module MarketPlaceBackEnd
+module products_go
 
 go 1.19
 
