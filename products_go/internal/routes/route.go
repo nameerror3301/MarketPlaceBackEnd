@@ -15,10 +15,12 @@ func RespStatus(apiVersion string, statusCode int, description string) fiber.Map
 	}
 }
 
+// Home page
 func Home(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(RespStatus("1.0", fiber.StatusOK, "Hello, it is starting page"))
 }
 
+// Get all product and total product (1 - 60)
 func GetAll(c *fiber.Ctx) error {
 	requ, err := models.ReadCSV(c.Query("total")) // Test
 	if requ == nil || err != nil {
@@ -29,6 +31,7 @@ func GetAll(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).Send(requ)
 }
 
+// Get product by id
 func GetById(c *fiber.Ctx) error {
 	requ, err := models.GetByIdProduct(c.Params("productId"))
 	if requ == nil || err != nil {
@@ -37,4 +40,10 @@ func GetById(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).Send(requ)
+}
+
+// Create user
+func SignUp(c *fiber.Ctx) error {
+
+	return nil
 }

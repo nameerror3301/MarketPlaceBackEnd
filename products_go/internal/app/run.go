@@ -12,6 +12,7 @@ func SetUpRoutes(app *fiber.App) {
 	app.Get("/api/v1", routes.Home)
 	app.Get("/api/v1/products", routes.GetAll)
 	app.Get("/api/v1/products/:productId", routes.GetById)
+	app.Post("/api/v1/sign-up", routes.SignUp)
 }
 
 func Run() {
