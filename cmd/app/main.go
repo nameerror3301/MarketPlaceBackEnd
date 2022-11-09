@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	app "products_go/internal/app"
+
+	app "MarketPlaceBackEnd/internal/app"
 )
 
 func main() {

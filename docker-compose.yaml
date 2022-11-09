@@ -1,20 +1,23 @@
 version: '3'
 
+# Create a proxy gateway
+
 networks:
   in.net.ex:
     driver: bridge
 
 services:
-  products:
-    build: ./products_go/
-    container_name: products.in.net.ex  
+  backend-service:
+    build: .
+    container_name: backend-service.in.net.ex
+    # Replace the file with the database
     environment:
       - PATH_TO_FILE=/yandex.csv
       - DRIVER_CONFIG=yaml
     ports:
       - 8080:8080
     volumes:
-      - ./products_go/internal/models/csv/yandex.csv:/yandex.csv
+      - ./internal/models/csv/yandex.csv:/yandex.csv
     networks:
       - in.net.ex
 
