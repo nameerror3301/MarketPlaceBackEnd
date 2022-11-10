@@ -2,7 +2,6 @@ package models
 
 import (
 	"encoding/csv"
-	"encoding/json"
 	"fmt"
 	"io"
 	"os"
@@ -39,14 +38,14 @@ const (
 // WORK: Checking the resulting value
 func CheckParamAndQuery(total string) (bool, int) {
 	num, _ := strconv.Atoi(total)
-	if num <= min || num >= max {
+	if num <= min || num > max {
 		return false, 0
 	}
 	return true, num
 }
 
 // WORK: Needed to read a csv file of goods
-func ReadCSV(total string) ([]byte, error) {
+func ReadCSV(total string) ([]ProductData, error) {
 	file, err := os.Open(os.Getenv("PATH_TO_FILE"))
 
 	if err != nil {
@@ -57,10 +56,7 @@ func ReadCSV(total string) ([]byte, error) {
 	var product []ProductData
 
 	if total == "" {
-		requ, err := json.Marshal(ReadAllFile(product, file))
-		if err != nil {
-			return nil, fmt.Errorf("Err marshal struct - %s", err)
-		}
+		requ := ReadAllFile(product, file)
 		return requ, nil
 	}
 
@@ -69,35 +65,21 @@ func ReadCSV(total string) ([]byte, error) {
 		return nil, nil
 	}
 
-	requ, err := json.Marshal(ReadToTotal(product, file, num))
-	if err != nil {
-		return nil, fmt.Errorf("Err marshal struct - %s", err)
-	}
+	requ := ReadToTotal(product, file, num)
 
 	return requ, nil
 }
 
 // WORK: Returns one item by the specified identifier
-func GetByIdProduct(id string) ([]byte, error) {
-	var product []ProductData
-
+func GetByIdProduct(id string) ([]ProductData, error) {
 	request, err := ReadCSV("")
 	if err != nil {
 		return nil, err
 	}
 
-	err = json.Unmarshal(request, &product)
-	if err != nil {
-		return nil, fmt.Errorf("Err unmarshal product to struct - %s", err)
-	}
-
-	for _, val := range product {
+	for _, val := range request {
 		if val.ID == id {
-			if requ, err := json.Marshal(val); err != nil {
-				return nil, fmt.Errorf("Err marshal struct - %s", err)
-			} else {
-				return requ, nil
-			}
+			return []ProductData{val}, nil
 		}
 	}
 	return nil, nil
