@@ -36,7 +36,7 @@ const (
 )
 
 // WORK: Checking the resulting value
-func CheckParamAndQuery(total string) (bool, int) {
+func checkParamAndQuery(total string) (bool, int) {
 	num, _ := strconv.Atoi(total)
 	if num <= min || num > max {
 		return false, 0
@@ -56,16 +56,16 @@ func ReadCSV(total string) ([]ProductData, error) {
 	var product []ProductData
 
 	if total == "" {
-		requ := ReadAllFile(product, file)
+		requ := readAllFile(product, file)
 		return requ, nil
 	}
 
-	valid, num := CheckParamAndQuery(total)
+	valid, num := checkParamAndQuery(total)
 	if !valid {
 		return nil, nil
 	}
 
-	requ := ReadToTotal(product, file, num)
+	requ := readToTotal(product, file, num)
 
 	return requ, nil
 }
@@ -86,7 +86,7 @@ func GetByIdProduct(id string) ([]ProductData, error) {
 }
 
 // WORK: Returns all items if the value total was not received
-func ReadAllFile(product []ProductData, file *os.File) []ProductData {
+func readAllFile(product []ProductData, file *os.File) []ProductData {
 	fileReader := csv.NewReader(file)
 	for {
 		line, err := fileReader.Read()
@@ -112,7 +112,7 @@ func ReadAllFile(product []ProductData, file *os.File) []ProductData {
 }
 
 // WORK: Returns all items up to the value specified on the total
-func ReadToTotal(product []ProductData, file *os.File, total int) []ProductData {
+func readToTotal(product []ProductData, file *os.File, total int) []ProductData {
 	fileReader := csv.NewReader(file)
 	for idx := 0; idx != total; {
 		line, err := fileReader.Read()
