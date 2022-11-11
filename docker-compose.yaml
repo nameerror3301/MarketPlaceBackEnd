@@ -17,8 +17,8 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - ./internal/config/config.yaml:/config.yaml
-      - ./internal/models/csv/yandex.csv:/yandex.csv
+      - ./internal/config/config.yaml:/config.yaml:ro
+      - ./internal/models/csv/yandex.csv:/yandex.csv:ro
     depends_on:
       - backend-db.in.net.ex
     networks:
@@ -32,8 +32,9 @@ services:
         - POSTGRES_DB=postgres
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=qwerty
+        - PGDATA=/var/lib/postgresql/data/pgdata
       volumes:
-        - ./.database/postgres/data:/var/lib/postgresql/data
+        - ./sql:/docker-entrypoint-initdb.d
       ports:
         - 5432:5432
       networks:
