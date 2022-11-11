@@ -35,6 +35,7 @@ services:
         - PGDATA=/var/lib/postgresql/data/pgdata
       volumes:
         - ./sql:/docker-entrypoint-initdb.d
+        # WARNING: There must be a volume here to save your database data 
       ports:
         - 5432:5432
       networks:
