@@ -13,11 +13,28 @@ services:
     # Replace the file with the database
     environment:
       - PATH_TO_FILE=/yandex.csv
-      - DRIVER_CONFIG=yaml
+      # - DRIVER_CONFIG=yaml
     ports:
       - 8080:8080
     volumes:
+      - ./internal/config/config.yaml:/config.yaml
       - ./internal/models/csv/yandex.csv:/yandex.csv
+    depends_on:
+      - backend-db.in.net.ex
     networks:
       - in.net.ex
 
+  backend-db.in.net.ex:
+      restart: always
+      image: postgres:latest
+      container_name: backend-db.in.net.ex
+      environment:
+        - POSTGRES_DB=postgres
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=qwerty
+      volumes:
+        - ./.database/postgres/data:/var/lib/postgresql/data
+      ports:
+        - 5432:5432
+      networks:
+        - in.net.ex
