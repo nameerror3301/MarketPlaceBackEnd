@@ -1,0 +1,8 @@
+
+database:
+    username: "postgres"
+    host: "backend-db.in.net.ex" 
+    port: "5432" 
+    password: "qwerty"
+    dbname: "postgres"
+    sslmode: "disable"
