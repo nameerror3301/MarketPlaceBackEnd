@@ -6,6 +6,8 @@ import (
 	product "MarketPlaceBackEnd/internal/handler/products"
 	middle "MarketPlaceBackEnd/internal/middleware"
 
+	conn "MarketPlaceBackEnd/internal/database"
+
 	fiber "github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/sirupsen/logrus"
@@ -26,6 +28,12 @@ func Run() {
 
 	if err := app.Listen(":8080"); err != nil {
 		logrus.Fatalf("Err up server - %s", err)
+	}
+
+	if db, err := conn.ConnectDatabase(); db == nil || err != nil {
+		logrus.Warnf("Err connect to database - %s", err)
+	} else {
+		db.Close()
 	}
 
 	logrus.Info("Service is up!")
