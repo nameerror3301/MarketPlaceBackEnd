@@ -10,6 +10,8 @@ import (
 
 // WORK: Get all product and total product
 func GetAll(c *fiber.Ctx) error {
+	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSONCharsetUTF8)
+
 	resp, err := models.ReadCSV(c.Query("total")) // Test
 	if resp == nil || err != nil {
 		logrus.Warnf("Incorrect data or err func - [%v] [%s]\n", resp, err)
@@ -21,6 +23,8 @@ func GetAll(c *fiber.Ctx) error {
 
 // WORK: Get product by id
 func GetById(c *fiber.Ctx) error {
+	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSONCharsetUTF8)
+
 	resp, err := models.GetByIdProduct(c.Params("productId"))
 	if resp == nil || err != nil {
 		logrus.Warnf("Incorrect data or err func - [%v] [%s]\n", resp, err)

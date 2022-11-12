@@ -27,7 +27,7 @@ func GenJwtToket() (string, error) {
 
 // WORK: Create user
 func SignUp(c *fiber.Ctx) error {
-	// Check content type
+	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSONCharsetUTF8)
 	if content := c.Request().Header.ContentType(); string(content) != "application/json" {
 		return c.Status(fiber.StatusBadRequest).JSON(status.RespStatus("1.0", fiber.StatusBadRequest, "Incorrect Content-type", nil))
 	}
@@ -40,7 +40,7 @@ func SignUp(c *fiber.Ctx) error {
 }
 
 func SignIn(c *fiber.Ctx) error {
-	// Check content type
+	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSONCharsetUTF8)
 	if content := c.Request().Header.ContentType(); string(content) != "application/json" {
 		return c.Status(fiber.StatusBadRequest).JSON(status.RespStatus("1.0", fiber.StatusBadRequest, "Incorrect Content-type", nil))
 	}
