@@ -33,6 +33,7 @@ func Run() {
 	if db, err := conn.ConnectDatabase(); db == nil || err != nil {
 		logrus.Warnf("Err connect to database - %s", err)
 	} else {
+		logrus.Info("Connection to the database was successful")
 		db.Close()
 	}
 

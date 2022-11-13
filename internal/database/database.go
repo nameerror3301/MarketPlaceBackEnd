@@ -24,7 +24,6 @@ func ConnectDatabase() (*sql.DB, error) {
 		logrus.Warnf("Err check connect - %s", err)
 		return nil, err
 	}
-	logrus.Info("Connection to the database was successful")
 
 	return db, nil
 }
