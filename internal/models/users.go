@@ -3,6 +3,7 @@ package models
 import (
 	conn "MarketPlaceBackEnd/internal/database"
 	crypt "MarketPlaceBackEnd/tools"
+	"database/sql"
 
 	"github.com/sirupsen/logrus"
 )
@@ -13,11 +14,11 @@ type UserData struct {
 }
 
 func CreateUser(email string, pass string) error {
-	// Connect to database
 	db, err := conn.ConnectDatabase()
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 
 	// Hashing user password
 	hash, err := crypt.HashingPassword(pass)
@@ -35,6 +36,22 @@ func CreateUser(email string, pass string) error {
 	return nil
 }
 
-func AuthUser() {
+func AuthUser(email string, pass string) (bool, error) {
+	var temp string
+	db, err := conn.ConnectDatabase()
+	if err != nil {
+		return false, err
+	}
+	defer db.Close()
 
+	if rows := db.QueryRow(`SELECT hash_pass FROM users WHERE email = $1`, email).Scan(&temp); rows == sql.ErrNoRows {
+		return false, nil
+	}
+
+	if crypt.CheckControlSum(temp, pass) {
+		return false, nil
+	}
+
+	logrus.Info("The user was successfully logged in")
+	return true, nil
 }

@@ -17,7 +17,8 @@ func setUpRoutes(app *fiber.App) {
 	app.Get("/api/v1", routes.Home)
 	app.Get("/api/v1/products", middle.CheckJwtToken(), product.GetAll)
 	app.Get("/api/v1/products/:productId", middle.CheckJwtToken(), product.GetById)
-	app.Post("/api/v1/signUp", auth.SignUp)
+	app.Post("/api/v1/signUp", middle.CheckContentType(), auth.SignUp)
+	app.Post("/api/v1/signIn", middle.CheckContentType(), auth.SignIn)
 }
 
 func Run() {

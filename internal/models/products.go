@@ -10,6 +10,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// Business logic related to products and goods will be rewritten to use the database
+
 /*
 	IF -> You want to run the service without using the containerization technology,
 			you should pass this path to

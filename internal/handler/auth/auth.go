@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	status "MarketPlaceBackEnd/internal/handler"
+	responce "MarketPlaceBackEnd/internal/handler"
 
 	user "MarketPlaceBackEnd/internal/models"
 
@@ -13,7 +13,9 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func GenJwtToket() (string, error) {
+var u user.UserData
+
+func genJwtToket() (string, error) {
 	claims := jwt.MapClaims{
 		"exp": time.Now().Add(time.Hour * 12).Unix(),
 	}
@@ -28,7 +30,7 @@ func GenJwtToket() (string, error) {
 	return t, nil
 }
 
-func beforCreate(u *user.UserData, c *fiber.Ctx) (string, string, error) {
+func beforeCreate(u *user.UserData, c *fiber.Ctx) (string, string, error) {
 	err := c.BodyParser(&u)
 	if err != nil {
 		return "", "", err
@@ -38,32 +40,34 @@ func beforCreate(u *user.UserData, c *fiber.Ctx) (string, string, error) {
 
 // WORK: Create user
 func SignUp(c *fiber.Ctx) error {
-	if content := c.Request().Header.ContentType(); string(content) != "application/json" {
-		return c.Status(fiber.StatusBadRequest).JSON(status.RespStatus("1.0", fiber.StatusBadRequest, "Incorrect Content-type", nil))
-	}
-
-	var u user.UserData
-	email, pass, err := beforCreate(&u, c)
+	email, pass, err := beforeCreate(&u, c)
 	if err != nil {
-		fmt.Println(err)
-		return c.Status(fiber.StatusBadRequest).JSON(status.RespStatus("1.0", fiber.StatusBadRequest, "Incorrect data", nil))
+		return c.Status(fiber.StatusBadRequest).JSON(responce.RespStatus("1.0", fiber.StatusBadRequest, "Incorrect data", nil))
 	}
 
 	if err := user.CreateUser(email, pass); err != nil {
-		return c.Status(fiber.StatusServiceUnavailable).JSON(status.RespStatus("1.0", fiber.StatusServiceUnavailable, "A user with this Email has already registered", nil))
+		return c.Status(fiber.StatusOK).JSON(responce.RespStatus("1.0", fiber.StatusOK, "A user with this Email has already registered", nil))
+	} else {
+		return c.Status(fiber.StatusOK).JSON(responce.RespStatus("1.0", fiber.StatusUnauthorized, "Registration was successful !", nil))
 	}
-
-	token, err := GenJwtToket()
-	if err != nil {
-		return c.Status(fiber.StatusServiceUnavailable).JSON(status.RespStatus("1.0", fiber.StatusServiceUnavailable, "Technical failures", nil))
-	}
-	return c.Status(fiber.StatusOK).JSON(status.RespStatus("1.0", fiber.StatusOK, token, nil))
 }
 
-// NOTWORK: Login user
+// WORK: Login user
 func SignIn(c *fiber.Ctx) error {
-	if content := c.Request().Header.ContentType(); string(content) != "application/json" {
-		return c.Status(fiber.StatusBadRequest).JSON(status.RespStatus("1.0", fiber.StatusBadRequest, "Incorrect Content-type", nil))
+	email, pass, err := beforeCreate(&u, c)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(responce.RespStatus("1.0", fiber.StatusBadRequest, "Incorrect data", nil))
 	}
-	return c.Status(fiber.StatusOK).JSON(status.RespStatus("1.0", fiber.StatusOK, "It is sign-in!", nil))
+
+	if status, err := user.AuthUser(email, pass); !status {
+		fmt.Println(status, err)
+		return c.Status(fiber.StatusOK).JSON(responce.RespStatus("1.0", fiber.StatusOK, "Incorrect email or password", nil))
+	}
+
+	// Issuing a token to a user
+	if token, err := genJwtToket(); err != nil {
+		return c.Status(fiber.StatusServiceUnavailable).JSON(responce.RespStatus("1.0", fiber.StatusServiceUnavailable, "Technical failures", nil))
+	} else {
+		return c.Status(fiber.StatusOK).JSON(responce.RespStatus("1.0", fiber.StatusOK, token, nil))
+	}
 }
