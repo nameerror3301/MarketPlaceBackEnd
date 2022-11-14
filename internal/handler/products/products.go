@@ -12,7 +12,7 @@ import (
 func GetAll(c *fiber.Ctx) error {
 	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSONCharsetUTF8)
 
-	resp, err := models.ReadCSV(c.Query("total")) // Test
+	resp, err := models.FindAll(c.Query("total")) // Test
 	if resp == nil || err != nil {
 		logrus.Warnf("Incorrect data or err func - [%v] [%s]\n", resp, err)
 		return c.Status(fiber.StatusBadRequest).JSON(responce.RespStatus("1.0", fiber.StatusBadRequest, "Incorrect data", resp))
@@ -25,7 +25,7 @@ func GetAll(c *fiber.Ctx) error {
 func GetById(c *fiber.Ctx) error {
 	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSONCharsetUTF8)
 
-	resp, err := models.GetByIdProduct(c.Params("productId"))
+	resp, err := models.FindById(c.Params("productId"))
 	if resp == nil || err != nil {
 		logrus.Warnf("Incorrect data or err func - [%v] [%s]\n", resp, err)
 		return c.Status(fiber.StatusBadRequest).JSON(responce.RespStatus("1.0", fiber.StatusBadRequest, "Incorrect data", nil))

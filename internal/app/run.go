@@ -13,6 +13,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// middle.CheckContentType()
 func setUpRoutes(app *fiber.App) {
 	app.Get("/api/v1", routes.Home)
 	app.Get("/api/v1/products", middle.CheckJwtToken(), product.GetAll)

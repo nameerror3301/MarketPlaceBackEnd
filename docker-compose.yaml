@@ -18,7 +18,6 @@ services:
       - 8080:8080
     volumes:
       - ./internal/config/config.yaml:/config.yaml:ro
-      - ./internal/models/csv/yandex.csv:/yandex.csv:ro
     depends_on:
       - backend-db.in.net.ex
     networks:
