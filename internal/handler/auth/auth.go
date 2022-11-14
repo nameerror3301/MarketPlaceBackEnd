@@ -2,6 +2,7 @@ package routes
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	responce "MarketPlaceBackEnd/internal/handler"
@@ -17,13 +18,13 @@ var u user.UserData
 
 func genJwtToket() (string, error) {
 	claims := jwt.MapClaims{
-		"exp": time.Now().Add(time.Hour * 12).Unix(),
+		"exp": time.Now().Add(time.Minute * 12).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	// The secret key will be stored in an environment variable (In the future...)
-	t, err := token.SignedString([]byte("SECRET"))
+	t, err := token.SignedString([]byte(os.Getenv("JWT_SEED")))
 	if err != nil {
 		logrus.Fatalf("Error in the process of generating a token for the user - %s", err)
 	}

@@ -12,8 +12,7 @@ services:
     container_name: backend-service.in.net.ex
     # Replace the file with the database
     environment:
-      - PATH_TO_FILE=/yandex.csv
-      # - DRIVER_CONFIG=yaml
+      - JWT_SEED=SECRET # Phrase for generating a token
     ports:
       - 8080:8080
     volumes:
