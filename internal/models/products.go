@@ -16,16 +16,10 @@ type ProductData struct {
 	Link             string `json:"link,omitempty"`
 }
 
-// Constants for determining the minimum and maximum values for the parameters
-const (
-	min = 0
-	max = 10000
-)
-
 // WORK: Checking the resulting value
 func checkParamAndQuery(total string) (bool, int) {
 	num, _ := strconv.Atoi(total)
-	if num <= min || num > max {
+	if num <= 0 || num > 10000 {
 		return false, 0
 	}
 	return true, num
