@@ -12,7 +12,7 @@ if content := c.Request().Header.ContentType(); string(content) != "application/
 		}
 */
 
-// NOT WORK
+// WORK
 func CheckContentType() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		if content := c.Request().Header.ContentType(); string(content) != "application/json" {
