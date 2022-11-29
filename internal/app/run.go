@@ -1,10 +1,8 @@
 package app
 
 import (
-	routes "MarketPlaceBackEnd/internal/handler"
-	auth "MarketPlaceBackEnd/internal/handler/auth"
-	product "MarketPlaceBackEnd/internal/handler/products"
 	middle "MarketPlaceBackEnd/internal/middleware"
+	"MarketPlaceBackEnd/internal/routes"
 
 	conn "MarketPlaceBackEnd/internal/database"
 
@@ -16,10 +14,10 @@ import (
 // middle.CheckContentType()
 func setUpRoutes(app *fiber.App) {
 	app.Get("/api/v1", routes.Home)
-	app.Get("/api/v1/products", middle.CheckJwtToken(), product.GetAll)
-	app.Get("/api/v1/products/:productId", middle.CheckJwtToken(), product.GetById)
-	app.Post("/api/v1/signUp", middle.CheckContentType(), auth.SignUp)
-	app.Post("/api/v1/signIn", middle.CheckContentType(), auth.SignIn)
+	app.Get("/api/v1/products", middle.CheckJwtToken(), routes.GetAll)
+	app.Get("/api/v1/products/:productId", middle.CheckJwtToken(), routes.GetById)
+	app.Post("/api/v1/signUp", middle.CheckContentType(), routes.SignUp)
+	app.Post("/api/v1/signIn", middle.CheckContentType(), routes.SignIn)
 }
 
 func Run() {

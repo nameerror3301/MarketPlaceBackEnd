@@ -5,8 +5,6 @@ import (
 	"os"
 	"time"
 
-	responce "MarketPlaceBackEnd/internal/handler"
-
 	user "MarketPlaceBackEnd/internal/models"
 
 	"github.com/gofiber/fiber/v2"
@@ -43,13 +41,13 @@ func beforeCreate(u *user.UserData, c *fiber.Ctx) (string, string, error) {
 func SignUp(c *fiber.Ctx) error {
 	email, pass, err := beforeCreate(&u, c)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(responce.RespStatus("1.0", fiber.StatusBadRequest, "Incorrect data", nil))
+		return c.Status(fiber.StatusBadRequest).JSON(RespStatus("1.0", fiber.StatusBadRequest, "Incorrect data", nil))
 	}
 
 	if err := user.CreateUser(email, pass); err != nil {
-		return c.Status(fiber.StatusOK).JSON(responce.RespStatus("1.0", fiber.StatusOK, "A user with this Email has already registered", nil))
+		return c.Status(fiber.StatusOK).JSON(RespStatus("1.0", fiber.StatusOK, "A user with this Email has already registered", nil))
 	} else {
-		return c.Status(fiber.StatusOK).JSON(responce.RespStatus("1.0", fiber.StatusUnauthorized, "Registration was successful !", nil))
+		return c.Status(fiber.StatusOK).JSON(RespStatus("1.0", fiber.StatusUnauthorized, "Registration was successful !", nil))
 	}
 }
 
@@ -57,18 +55,18 @@ func SignUp(c *fiber.Ctx) error {
 func SignIn(c *fiber.Ctx) error {
 	email, pass, err := beforeCreate(&u, c)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(responce.RespStatus("1.0", fiber.StatusBadRequest, "Incorrect data", nil))
+		return c.Status(fiber.StatusBadRequest).JSON(RespStatus("1.0", fiber.StatusBadRequest, "Incorrect data", nil))
 	}
 
 	if status, err := user.AuthUser(email, pass); !status {
 		fmt.Println(status, err)
-		return c.Status(fiber.StatusOK).JSON(responce.RespStatus("1.0", fiber.StatusOK, "Incorrect email or password", nil))
+		return c.Status(fiber.StatusOK).JSON(RespStatus("1.0", fiber.StatusOK, "Incorrect email or password", nil))
 	}
 
 	// Issuing a token to a user
 	if token, err := genJwtToket(); err != nil {
-		return c.Status(fiber.StatusServiceUnavailable).JSON(responce.RespStatus("1.0", fiber.StatusServiceUnavailable, "Technical failures", nil))
+		return c.Status(fiber.StatusServiceUnavailable).JSON(RespStatus("1.0", fiber.StatusServiceUnavailable, "Technical failures", nil))
 	} else {
-		return c.Status(fiber.StatusOK).JSON(responce.RespStatus("1.0", fiber.StatusOK, token, nil))
+		return c.Status(fiber.StatusOK).JSON(RespStatus("1.0", fiber.StatusOK, token, nil))
 	}
 }
