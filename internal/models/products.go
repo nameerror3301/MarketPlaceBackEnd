@@ -102,7 +102,7 @@ func FindById(id string) ([]ProductData, error) {
 }
 
 // WORK: Find products to total
-func findToTotal(db *sql.DB, data []ProductData, num int) ([]ProductData, error) {
+func FindToTotal(db *sql.DB, data []ProductData, num int) ([]ProductData, error) {
 	rows, err := db.Query(`SELECT id, market_name, prod_manufacturer, prod_name, art, price, link FROM products LIMIT $1`, num)
 	if err != nil {
 		return nil, err
