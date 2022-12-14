@@ -36,7 +36,7 @@ func FindAll(total string) ([]ProductData, error) {
 
 	status, num := checkParamAndQuery(total)
 	if status {
-		if data, err := findToTotal(db, data, num); err != nil {
+		if data, err := FindToTotal(db, data, num); err != nil {
 			return nil, err
 		} else {
 			return data, nil
