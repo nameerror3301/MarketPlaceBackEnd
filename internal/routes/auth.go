@@ -45,9 +45,9 @@ func SignUp(c *fiber.Ctx) error {
 	}
 
 	if err := user.CreateUser(email, pass); err != nil {
-		return c.Status(fiber.StatusOK).JSON(RespStatus("1.0", fiber.StatusOK, "A user with this Email has already registered", nil))
+		return c.Status(fiber.StatusUnauthorized).JSON(RespStatus("1.0", fiber.StatusUnauthorized, "A user with this Email has already registered", nil))
 	} else {
-		return c.Status(fiber.StatusOK).JSON(RespStatus("1.0", fiber.StatusUnauthorized, "Registration was successful !", nil))
+		return c.Status(fiber.StatusOK).JSON(RespStatus("1.0", fiber.StatusOK, "Registration was successful!", nil))
 	}
 }
 
